@@ -1,4 +1,4 @@
-{} @args:
+{pkgs, ... } @args:
 {
   environment.systemPackages = with pkgs; [
     git
@@ -6,6 +6,8 @@
     wget
     curl
   ];
+
+  nixpkgs.config.allowUnfree = true;
 
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];

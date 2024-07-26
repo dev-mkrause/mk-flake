@@ -72,7 +72,7 @@
 
   programs.firefox = {
     enable = true;
-    languagePacks = ["en-US" "de-DE"];
+    # languagePacks = ["en-US" "de-DE"];
   };
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
