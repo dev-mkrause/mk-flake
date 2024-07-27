@@ -106,7 +106,7 @@
         };
         clock = {
           "interval" = 1;
-          "format" = "{:%a %d.%m.%Y %I:%M:%S %p}";
+          "format" = "{:%a %d.%m.%Y %H:%M:%S}";
           "timezone" = "Europe/Berlin";
           "tooltip-format" = ''
             <big>{:%Y %B}</big>
