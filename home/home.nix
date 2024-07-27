@@ -59,159 +59,173 @@
   programs.waybar = {
     enable = true;
     systemd.enable = true;
-    settings =  {
+    settings = {
       mainBar = {
         layer = "top";
         position = "top";
-        modules-left = [
-          "sway/workspaces"
-          "custom/spacer"
-          "sway/window"
-        ];
-        modules-center = [
-          "clock"
-        ];
-        modules-right = [
-          "pulseaudio"
-          "memory"
-          "cpu"
-          "battery"
-          "disk"
-          "tray"
-        ];
-        "custom/spacer" = {
-          format = "|";
-          tooltip = false;
+        height = 35;
+        margin = "7 7 3 7";
+        spacing = 2;
+
+        modules-left = [ "custom/os" "battery" "backlight" "pulseaudio" "cpu" "memory" ];
+        modules-center = [ "sway/workspaces" ];
+        modules-right = [ "idle_inhibitor" "tray" "clock" ];
+
+        "custom/os" = {
+          "format" = " {} ";
+          "exec" = ''echo "" '';
+          "interval" = "once";
         };
         "sway/workspaces" = {
-          disable-scroll = true;
-          format = "{name}";
+          "format" = "{icon}";
+          "format-icons" = {
+            "1" = "󱚌";
+            "2" = "󰖟";
+            "3" = "";
+            "4" = "󰎄";
+            "5" = "󰋩";
+            "6" = "";
+            "7" = "󰄖";
+            "8" = "󰑴";
+            "9" = "󱎓";
+          };
         };
-        "sway/window" = {
-          max-length = 50;
-          icon = true;
-        };
-        clock = {
-          format = "{:%a   %d-%m-%Y  %R}";
-          tooltip = false;
-        };
-        pulseaudio = {
-          format = " {volume:2}%";
-          format-bluetooth = " {volume}%";
-          format-muted = "MUTE";
+
+        "idle_inhibitor" = {
+          format = "{icon}";
           format-icons = {
-            headphones = "";
+            activated = "󰅶";
+            deactivated = "󰾪";
           };
-          scroll-step = 5;
-          on-click = "pamixer -t";
-          on-click-right = "pavucontrol";
-        };
-        memory = {
-          interval = 5;
-          format = " {}%";
-        };
-        cpu = {
-          interval = 5;
-          format = " {usage:2}%";
-        };
-        battery = {
-          states = {
-            warning = 30;
-            critical = 15;
-          };
-          format = "{icon} {capacity}%";
-          format-charging = " {capacity}%";
-          format-icons = [
-            ""
-            ""
-            ""
-            ""
-          ];
-        };
-        disk = {
-          interval = 5;
-          format = " {percentage_used:2}%";
-          path = "/";
         };
         tray = {
-          icon-size = 20;
+          #"icon-size" = 21;
+          "spacing" = 10;
+        };
+        clock = {
+          "interval" = 1;
+          "format" = "{:%a %d.%m.%Y %I:%M:%S %p}";
+          "timezone" = "Europe/Berlin";
+          "tooltip-format" = ''
+            <big>{:%Y %B}</big>
+            <tt><small>{calendar}</small></tt>'';
+        };
+        cpu = {
+          "format" = "{usage}% ";
+        };
+        memory = { "format" = "{}% "; };
+        backlight = {
+          "format" = "{percent}% {icon}";
+          "format-icons" = [ "" "" "" "" "" "" "" "" "" ];
+        };
+        battery = {
+          "states" = {
+            "good" = 95;
+            "warning" = 30;
+            "critical" = 15;
+          };
+          "format" = "{capacity}% {icon}";
+          "format-charging" = "{capacity}% ";
+          "format-plugged" = "{capacity}% ";
+          #"format-good" = ""; # An empty format will hide the module
+          #"format-full" = "";
+          "format-icons" = [ "" "" "" "" "" ];
+        };
+        pulseaudio = {
+          "scroll-step" = 1;
+          "format" = "{volume}% {icon}  {format_source}";
+          "format-bluetooth" = "{volume}% {icon}  {format_source}";
+          "format-bluetooth-muted" = "󰸈 {icon}  {format_source}";
+          "format-muted" = "󰸈 {format_source}";
+          "format-source" = "{volume}% ";
+          "format-source-muted" = " ";
+          "format-icons" = {
+            "headphone" = "";
+            "hands-free" = "";
+            "headset" = "";
+            "phone" = "";
+            "portable" = "";
+            "car" = "";
+            "default" = [ "" "" "" ];
+          };
         };
       };
     };
-  };
+    };
 
-  wayland.windowManager.sway = {
-    enable = true;
-    config = rec {
-      bars = [];
-      modifier = "Mod4";
-      terminal = "foot";
+    wayland.windowManager.sway = {
+      enable = true;
+      config = rec {
+        bars = [];
+        modifier = "Mod4";
+        terminal = "foot";
 
-      input = {
-        "type:keyboard" = {
-          xkb_layout = "de";
-          xkb_variant = "nodeadkeys";
-          xkb_options = "ctrl:nocaps";
+        input = {
+          "type:keyboard" = {
+            xkb_layout = "de";
+            xkb_variant = "nodeadkeys";
+            xkb_options = "ctrl:nocaps";
+          };
+
+          "type:touchpad" = {
+            dwt = "enabled";
+            tap = "enabled";
+            natural_scroll = "enabled";
+            middle_emulation = "enabled";
+          };
         };
 
-        "type:touchpad" = {
-          dwt = "enabled";
-          tap = "enabled";
-          natural_scroll = "enabled";
-          middle_emulation = "enabled";
+        keybindings = lib.mkOptionDefault {
+          "${modifier}+d" = "exec ${pkgs.rofi-wayland}/bin/rofi -show run";
+          "${modifier}+p" = "exec $VISUAL";
         };
-      };
-
-      keybindings = lib.mkOptionDefault {
-        "${modifier}+d" = "exec ${pkgs.rofi-wayland}/bin/rofi -show run";
       };
     };
-  };
 
-  programs.bash = {
-    enable = true;
-    enableCompletion = true;
-    bashrcExtra = ''
+    programs.bash = {
+      enable = true;
+      enableCompletion = true;
+      bashrcExtra = ''
       export PATH="$PATH:$HOME/bin:$HOME/.local/bin:$HOME/go/bin"
     '';
 
-    # set some aliases, feel free to add more or remove some
-    shellAliases = {
-      ls = "ls --color";
-      la = "ls -alh";
+      # set some aliases, feel free to add more or remove some
+      shellAliases = {
+        ls = "ls --color";
+        la = "ls -alh";
+      };
     };
-  };
 
-  programs.gpg.enable = true;
-  programs.emacs.enable = true;
-  
-  programs.foot.enable = true;
+    programs.gpg.enable = true;
+    programs.emacs.enable = true;
+    
+    programs.foot.enable = true;
 
-  programs.firefox = {
-    enable = true;
-    # languagePacks = ["en-US" "de-DE"];
-  };
+    programs.firefox = {
+      enable = true;
+      # languagePacks = ["en-US" "de-DE"];
+    };
 
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
-  home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
+    # Home Manager is pretty good at managing dotfiles. The primary way to manage
+    # plain files is through 'home.file'.
+    home.file = {
+      # # Building this configuration will create a copy of 'dotfiles/screenrc' in
+      # # the Nix store. Activating the configuration will then make '~/.screenrc' a
+      # # symlink to the Nix store copy.
+      # ".screenrc".source = dotfiles/screenrc;
 
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
-  };
+      # # You can also set the file content immediately.
+      # ".gradle/gradle.properties".text = ''
+      #   org.gradle.console=verbose
+      #   org.gradle.daemon.idletimeout=3600000
+      # '';
+    };
 
-  home.sessionVariables = {
-    EDITOR = "emacsclient -tca emacs";
-    VISUAL = "emacsclient -ca emacs";
-  };
+    home.sessionVariables = {
+      EDITOR = "emacsclient -tca emacs";
+      VISUAL = "emacsclient -ca emacs";
+    };
 
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
-}
+    # Let Home Manager install and manage itself.
+    programs.home-manager.enable = true;
+  }
