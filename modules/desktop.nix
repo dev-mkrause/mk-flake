@@ -6,7 +6,7 @@
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
-    # Select internationalisation properties.
+  # Select internationalisation properties.
   i18n.defaultLocale = "de_DE.UTF-8";
 
   i18n.extraLocaleSettings = {
@@ -45,7 +45,7 @@
       git
       flameshot
       foot
-      rofi
+      fuzzel
       dunst
       libnotify
       nh
@@ -79,6 +79,15 @@
           recursiveBlurRadius = 5;
         };})
     ];
+
+  services.dbus = {
+    enable = true;
+    packages = [ pkgs.dconf ];
+  };
+
+  programs.dconf = {
+    enable = true;
+  };
 
   services.xserver = {
     enable = true;

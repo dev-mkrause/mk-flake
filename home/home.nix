@@ -26,6 +26,7 @@
     ardour
     hugo
     portfolio
+    discord
     
     nil # Nix language server
 
@@ -35,6 +36,7 @@
     xz
     unzip
     (ripgrep.override { withPCRE2 = true; })
+    fd
     jq
     tree
     which
@@ -49,7 +51,6 @@
   
   stylix.enable = true;
   stylix.autoEnable = true;
-
   stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";
   stylix.polarity = "dark";
   stylix.image = pkgs.fetchurl {
@@ -177,8 +178,9 @@
         };
 
         keybindings = lib.mkOptionDefault {
-          "${modifier}+d" = "exec ${pkgs.rofi-wayland}/bin/rofi -show run";
+          "${modifier}+d" = "exec fuzzel";
           "${modifier}+p" = "exec $VISUAL";
+          "${modifier}+Print" = "exec flameshot gui";
         };
       };
     };
@@ -197,7 +199,33 @@
       };
     };
 
-#    services.gnome-keyring.enable = true;
+  services.gnome-keyring.enable = true;
+
+  services.udiskie.enable = true;
+  services.udiskie.tray = "always";
+  programs.fuzzel.enable = true;
+  stylix.targets.fuzzel.enable = false;
+  programs.fuzzel.settings = {
+    main = {
+      font = config.stylix.fonts.serif.name + ":size=20";
+      dpi-aware = "no";
+      show-actions = "yes";
+      terminal = "${pkgs.foot}/bin/foot";
+    };
+    colors = {
+      background = config.lib.stylix.colors.base00 + "bf";
+      text = config.lib.stylix.colors.base07 + "ff";
+      match = config.lib.stylix.colors.base05 + "ff";
+      selection = config.lib.stylix.colors.base08 + "ff";
+      selection-text = config.lib.stylix.colors.base00 + "ff";
+      selection-match = config.lib.stylix.colors.base05 + "ff";
+      border = config.lib.stylix.colors.base08 + "ff";
+    };
+    border = {
+      width = 3;
+      radius = 7;
+    };
+  };
     
     programs.gpg.enable = true;
     programs.emacs.enable = true;
