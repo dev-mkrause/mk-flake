@@ -5,6 +5,7 @@
     emacs
     wget
     curl
+    htop
   ];
 
   nixpkgs.config.allowUnfree = true;

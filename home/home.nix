@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -25,7 +25,9 @@
     signal-desktop
     ardour
     hugo
-    nil
+    portfolio
+    
+    nil # Nix language server
 
     pciutils
     usbutils
@@ -45,6 +47,127 @@
     iosevka-comfy.comfy
   ];
   
+  stylix.enable = true;
+  stylix.autoEnable = true;
+
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";
+  stylix.image = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/de03e887f03037e7e781a678b57fdae603c9ca20/wallpapers/nix-wallpaper-binary-black_8k.png";
+    sha256 = "1dkw7vn3m412bx1q7qwbk1vv4bkjyfhj77li4cga6xm66nzj049k";
+  };
+
+  programs.waybar = {
+    enable = true;
+    systemd.enable = true;
+    settings =  {
+      mainBar = {
+        layer = "top";
+        position = "top";
+        modules-left = [
+          "sway/workspaces"
+          "custom/spacer"
+          "sway/window"
+        ];
+        modules-center = [
+          "clock"
+        ];
+        modules-right = [
+          "pulseaudio"
+          "memory"
+          "cpu"
+          "battery"
+          "disk"
+          "tray"
+        ];
+        "custom/spacer" = {
+          format = "|";
+          tooltip = false;
+        };
+        "sway/workspaces" = {
+          disable-scroll = true;
+          format = "{name}";
+        };
+        "sway/window" = {
+          max-length = 50;
+          icon = true;
+        };
+        clock = {
+          format = "{:%a   %d-%m-%Y  %R}";
+          tooltip = false;
+        };
+        pulseaudio = {
+          format = " {volume:2}%";
+          format-bluetooth = " {volume}%";
+          format-muted = "MUTE";
+          format-icons = {
+            headphones = "";
+          };
+          scroll-step = 5;
+          on-click = "pamixer -t";
+          on-click-right = "pavucontrol";
+        };
+        memory = {
+          interval = 5;
+          format = " {}%";
+        };
+        cpu = {
+          interval = 5;
+          format = " {usage:2}%";
+        };
+        battery = {
+          states = {
+            warning = 30;
+            critical = 15;
+          };
+          format = "{icon} {capacity}%";
+          format-charging = " {capacity}%";
+          format-icons = [
+            ""
+            ""
+            ""
+            ""
+          ];
+        };
+        disk = {
+          interval = 5;
+          format = " {percentage_used:2}%";
+          path = "/";
+        };
+        tray = {
+          icon-size = 20;
+        };
+      };
+    };
+  };
+
+  wayland.windowManager.sway = {
+    enable = true;
+    config = rec {
+      bars = [];
+      modifier = "Mod4";
+      terminal = "foot";
+
+      input = {
+        "type:keyboard" = {
+          xkb_layout = "de";
+          xkb_variant = "nodeadkeys";
+          xkb_options = "ctrl:nocaps";
+        };
+
+        "type:touchpad" = {
+          dwt = "enabled";
+          tap = "enabled";
+          natural_scroll = "enabled";
+          middle_emulation = "enabled";
+        };
+      };
+
+      keybindings = lib.mkOptionDefault {
+        "${modifier}+d" = "exec ${pkgs.rofi-wayland}/bin/rofi -show run";
+      };
+    };
+  };
+
   programs.bash = {
     enable = true;
     enableCompletion = true;
@@ -62,13 +185,7 @@
   programs.gpg.enable = true;
   programs.emacs.enable = true;
   
-  programs.foot = {
-    enable = true;
-    settings.main = {
-      font = "Iosevka Comfy:size=9";
-      dpi-aware = "yes";
-    };
-  };
+  programs.foot.enable = true;
 
   programs.firefox = {
     enable = true;

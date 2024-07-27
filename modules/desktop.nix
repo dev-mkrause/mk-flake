@@ -1,4 +1,4 @@
-{pkgs, ...} @args:
+{pkgs, config, ...}:
 {
   # Enable networking
   networking.networkmanager.enable = true;
@@ -24,7 +24,7 @@
   # Configure console keymap
   console.keyMap = "de-latin1-nodeadkeys";
 
-    # Enable sound with pipewire.
+  # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -32,12 +32,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+    jack.enable = true;
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -48,21 +43,68 @@
     packages = with pkgs; [
       emacs
       git
+      flameshot
+      foot
+      rofi
+      dunst
+      libnotify
+      nh
+      waybar
     ];
   };
 
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.wayland.enable = true;
-  services.desktopManager.plasma6.enable = true;
-  programs.hyprland = {
-    enable = true;
-    xwayland = true;
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; 
+
+  stylix.enable = true;
+  stylix.autoEnable = true;
+  stylix.image = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/de03e887f03037e7e781a678b57fdae603c9ca20/wallpapers/nix-wallpaper-binary-black_8k.png";
+    sha256 = "1dkw7vn3m412bx1q7qwbk1vv4bkjyfhj77li4cga6xm66nzj049k";
   };
+
+  fonts.packages = with pkgs; [iosevka-comfy.comfy];
+
+  environment.systemPackages = with pkgs;
+    [ wayland waydroid
+      (sddm-chili-theme.override {
+        themeConfig = {
+          background = config.stylix.image;
+          ScreenWidth = 1920;
+          ScreenHeight = 1080;
+          blur = true;
+          recursiveBlurLoops = 3;
+          recursiveBlurRadius = 5;
+        };})
+    ];
+
+  services.xserver = {
+    enable = true;
+    xkb = {
+      layout = "de";
+      variant = "nodeadkeys";
+      options = "ctrl:nocaps";
+    };
+
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+      enableHidpi = true;
+      theme = "chili";
+    };
+  };
+
+  security = {
+    pam.services.login.enableGnomeKeyring = true;
+  };
+
+  services.gnome.gnome-keyring.enable = true;
   
+  programs.sway.enable = true;
 
-  # Install firefox.
   programs.firefox.enable = true;
-
+  programs.steam.enable = true;
+  
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
