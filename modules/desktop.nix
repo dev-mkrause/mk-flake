@@ -58,9 +58,11 @@
 
   stylix.enable = true;
   stylix.autoEnable = true;
+  stylix.polarity = "dark";
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";
   stylix.image = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/de03e887f03037e7e781a678b57fdae603c9ca20/wallpapers/nix-wallpaper-binary-black_8k.png";
-    sha256 = "1dkw7vn3m412bx1q7qwbk1vv4bkjyfhj77li4cga6xm66nzj049k";
+    url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/master/png/gruvbox-dark-blue.png";
+    sha256 = "1jrmdhlcnmqkrdzylpq6kv9m3qsl317af3g66wf9lm3mz6xd6dzs";
   };
 
   fonts.packages = with pkgs; [iosevka-comfy.comfy];
@@ -89,7 +91,6 @@
     displayManager.sddm = {
       enable = true;
       wayland.enable = true;
-      enableHidpi = true;
       theme = "chili";
     };
   };
