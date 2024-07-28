@@ -89,6 +89,8 @@
     enable = true;
   };
 
+  security.polkit.enable = true;
+
   services.xserver = {
     enable = true;
     xkb = {
@@ -99,7 +101,6 @@
 
     displayManager.sddm = {
       enable = true;
-      wayland.enable = true;
       theme = "chili";
     };
   };

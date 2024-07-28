@@ -27,7 +27,7 @@
     hugo
     portfolio
     discord
-    
+    iosevka-comfy.comfy
     nil # Nix language server
 
     pciutils
@@ -45,8 +45,6 @@
     gawk
     zstd
     gnupg
-
-    iosevka-comfy.comfy
   ];
   
   stylix.enable = true;
@@ -153,51 +151,54 @@
         };
       };
     };
-    };
+  };
 
-    wayland.windowManager.sway = {
-      enable = true;
-      config = rec {
-        bars = [];
-        modifier = "Mod4";
-        terminal = "foot";
+  programs.swaylock.enable = true;
+  services.swayidle.enable = true;
+  wayland.windowManager.sway = {
+    enable = true;
+    config = rec {
+      bars = [];
+      modifier = "Mod4";
+      terminal = "foot";
 
-        input = {
-          "type:keyboard" = {
-            xkb_layout = "de";
-            xkb_variant = "nodeadkeys";
-            xkb_options = "ctrl:nocaps";
-          };
-
-          "type:touchpad" = {
-            dwt = "enabled";
-            tap = "enabled";
-            natural_scroll = "enabled";
-            middle_emulation = "enabled";
-          };
+      input = {
+        "type:keyboard" = {
+          xkb_layout = "de";
+          xkb_variant = "nodeadkeys";
+          xkb_options = "ctrl:nocaps";
         };
 
-        keybindings = lib.mkOptionDefault {
-          "${modifier}+d" = "exec fuzzel";
-          "${modifier}+p" = "exec $VISUAL";
-          "${modifier}+Print" = "exec flameshot gui";
+        "type:touchpad" = {
+          dwt = "enabled";
+          tap = "enabled";
+          natural_scroll = "enabled";
+          middle_emulation = "enabled";
         };
       };
-    };
 
-    programs.bash = {
-      enable = true;
-      enableCompletion = true;
-      bashrcExtra = ''
+      keybindings = lib.mkOptionDefault {
+        "${modifier}+d" = "exec fuzzel";
+        "${modifier}+p" = "exec $VISUAL";
+        "${modifier}+o" = "exec firefox";
+        "${modifier}+Print" = "exec flameshot gui";
+      };
+    };
+  };
+
+  programs.bash = {
+    enable = true;
+    enableCompletion = true;
+    bashrcExtra = ''
       export PATH="$PATH:$HOME/bin:$HOME/.local/bin:$HOME/go/bin"
     '';
 
-      # set some aliases, feel free to add more or remove some
-      shellAliases = {
-        ls = "ls --color";
-        la = "ls -alh";
-      };
+    # set some aliases, feel free to add more or remove some
+    shellAliases = {
+      ls = "ls --color";
+      la = "ls -alh";
     };
+  };
 
   services.gnome-keyring.enable = true;
 
@@ -226,37 +227,38 @@
       radius = 7;
     };
   };
-    
-    programs.gpg.enable = true;
-    programs.emacs.enable = true;
-    
-    programs.foot.enable = true;
+  
+  programs.gpg.enable = true;
+  programs.emacs.enable = true;
+  services.emacs.enable = true; # Emacs daemon
+  
+  programs.foot.enable = true;
 
-    programs.firefox = {
-      enable = true;
-      # languagePacks = ["en-US" "de-DE"];
-    };
+  programs.firefox = {
+    enable = true;
+    # languagePacks = ["en-US" "de-DE"];
+  };
 
-    # Home Manager is pretty good at managing dotfiles. The primary way to manage
-    # plain files is through 'home.file'.
-    home.file = {
-      # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-      # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-      # # symlink to the Nix store copy.
-      # ".screenrc".source = dotfiles/screenrc;
+  # Home Manager is pretty good at managing dotfiles. The primary way to manage
+  # plain files is through 'home.file'.
+  home.file = {
+    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
+    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
+    # # symlink to the Nix store copy.
+    # ".screenrc".source = dotfiles/screenrc;
 
-      # # You can also set the file content immediately.
-      # ".gradle/gradle.properties".text = ''
-      #   org.gradle.console=verbose
-      #   org.gradle.daemon.idletimeout=3600000
-      # '';
-    };
+    # # You can also set the file content immediately.
+    # ".gradle/gradle.properties".text = ''
+    #   org.gradle.console=verbose
+    #   org.gradle.daemon.idletimeout=3600000
+    # '';
+  };
 
-    home.sessionVariables = {
-      EDITOR = "emacsclient -tca emacs";
-      VISUAL = "emacsclient -ca emacs";
-    };
+  home.sessionVariables = {
+    EDITOR = "emacsclient -tca emacs";
+    VISUAL = "emacsclient -ca emacs";
+  };
 
-    # Let Home Manager install and manage itself.
-    programs.home-manager.enable = true;
-  }
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
+}

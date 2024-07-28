@@ -6,6 +6,18 @@
     wget
     curl
     htop
+    zip
+    unzip
+    xz
+    (ripgrep.override { withPCRE2 = true; })
+    fd
+    jq
+    tree
+    gnused
+    gnutar
+    gawk
+    zstd
+    gnupg
   ];
 
   nixpkgs.config.allowUnfree = true;
