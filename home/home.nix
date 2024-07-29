@@ -19,6 +19,8 @@
     htop
     git
     git-crypt
+    sops
+    age
     inkscape
     gimp
     anki

@@ -17,7 +17,7 @@
     stylix.url = "github:danth/stylix";
   };
 
-  outputs = { nixpkgs, stylix, home-manager, ... }@inputs:
+  outputs = {self, nixpkgs, stylix, home-manager, sops-nix}:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -27,7 +27,7 @@
         modules = [./cachy/configuration.nix
                    ./cachy/hardware-configuration.nix
                    stylix.nixosModules.stylix
-                   inputs.sops-nix.nixosModules.sops
+                   sops-nix.nixosModules.sops
                    home-manager.nixosModules.home-manager {
                      home-manager.useGlobalPkgs = true;
                      home-manager.useUserPackages = true;

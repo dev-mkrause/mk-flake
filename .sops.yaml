@@ -1,0 +1,13 @@
+keys:
+  - &mkrause 9370C85BA8E646639C4920C76DD554FE5563CF46
+  - &cachy age18y8gmn4dlmnpklkxqcgnsfldmw09v2mja0csa7lqq99qwsm8mucsepghdm
+creation_rules:
+  - path_regex: secrets/secrets.yaml$
+    key_groups:
+      # Be sure to not include a - before subsequent key types under key_groups
+      # This will break sops-nix (Shamir secret sharing)
+      # See https://github.com/Mic92/sops-nix
+      - pgp:
+          - *mkrause
+        age:
+          - *cachy
