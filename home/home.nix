@@ -154,7 +154,12 @@
   };
 
   programs.swaylock.enable = true;
-  services.swayidle.enable = true;
+  services.swayidle = {
+    enable = true;
+    timeouts = [ { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock"; } ];
+    events = [ { event = "before-sleep"; command = "${pkgs.swaylock}/bin/swaylock"; } ];
+  };
+
   wayland.windowManager.sway = {
     enable = true;
     config = rec {
