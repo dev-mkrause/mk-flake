@@ -29,6 +29,7 @@
     hugo
     portfolio
     discord
+    onlyoffice-bin
     iosevka-comfy.comfy
     nil # Nix language server
 
