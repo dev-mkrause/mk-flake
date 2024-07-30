@@ -145,4 +145,18 @@
     enable = true;
     enableSSHSupport = true;
   };
+
+  # Tika and Gotenberg are not yet in nixpkgs stable
+  services.paperless = {
+    enable = true;
+    consumptionDirIsPublic = true;
+
+    settings = {
+      PAPERLESS_OCR_LANGUAGE = "deu+eng";
+      PAPERLESS_CONSUMER_ENABLE_BARCODES = true;
+      PAPERLESS_CONSUMER_ENABLE_ASN_BARCODE = true;
+      PAPERLESS_CONSUMER_BARCODE_SCANNER = "ZXING";
+      PAPERLESS_FILENAME_FORMAT = "{owner_username}/{created_year}/{correspondent}/{title}";
+    };
+  };
 }
