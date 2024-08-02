@@ -53,14 +53,36 @@
     gnupg
   ];
 
-  stylix.enable = true;
-  stylix.autoEnable = true;
-  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";
-  stylix.polarity = "dark";
-  stylix.image = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/master/png/gruvbox-dark-blue.png";
-    sha256 = "1jrmdhlcnmqkrdzylpq6kv9m3qsl317af3g66wf9lm3mz6xd6dzs";
+  stylix = {
+    enable = true;
+    autoEnable = true;
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";
+    polarity = "dark";
+    image = pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/lunik1/nixos-logo-gruvbox-wallpaper/master/png/gruvbox-dark-blue.png";
+      sha256 = "1jrmdhlcnmqkrdzylpq6kv9m3qsl317af3g66wf9lm3mz6xd6dzs";
+    };
+
+    fonts = {
+      serif = {
+        package = pkgs.iosevka-comfy.comfy;
+        name = "Iosevka Comfy";
+      };
+
+      sansSerif = {
+        package = pkgs.iosevka-comfy.comfy;
+        name = "Iosevka Comfy";
+      };
+
+      monospace = {
+        package = pkgs.iosevka-comfy.comfy;
+        name = "Iosevka Comfy";
+      };
+    };
   };
+
+  stylix.targets.emacs.enable = false;
+  stylix.targets.fuzzel.enable = false;
 
   programs.waybar = {
     enable = true;
@@ -226,7 +248,7 @@
   services.udiskie.enable = true;
   services.udiskie.tray = "always";
   programs.fuzzel.enable = true;
-  stylix.targets.fuzzel.enable = false;
+
   programs.fuzzel.settings = {
     main = {
       font = config.stylix.fonts.serif.name + ":size=20";
