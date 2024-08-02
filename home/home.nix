@@ -110,12 +110,6 @@
             "1" = "󱚌";
             "2" = "󰖟";
             "3" = "";
-            "4" = "󰎄";
-            "5" = "󰋩";
-            "6" = "";
-            "7" = "󰄖";
-            "8" = "󰑴";
-            "9" = "󱎓";
           };
         };
 
@@ -153,10 +147,8 @@
             "critical" = 15;
           };
           "format" = "{capacity}% {icon}";
-          "format-charging" = "{capacity}% ";
+          "format-charging" = "{capacity}% ";
           "format-plugged" = "{capacity}% ";
-          #"format-good" = ""; # An empty format will hide the module
-          #"format-full" = "";
           "format-icons" = ["" "" "" "" ""];
         };
         pulseaudio = {
@@ -169,11 +161,9 @@
           "format-source-muted" = " ";
           "format-icons" = {
             "headphone" = "";
-            "hands-free" = "";
-            "headset" = "";
+            "headset" = "";
             "phone" = "";
             "portable" = "";
-            "car" = "";
             "default" = ["" "" ""];
           };
         };
