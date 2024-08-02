@@ -67,18 +67,25 @@
 
   fonts.packages = with pkgs; [iosevka-comfy.comfy];
 
-  environment.systemPackages = with pkgs;
-    [ wayland waydroid
-      (sddm-chili-theme.override {
-        themeConfig = {
-          background = config.stylix.image;
-          ScreenWidth = 1920;
-          ScreenHeight = 1080;
-          blur = true;
-          recursiveBlurLoops = 3;
-          recursiveBlurRadius = 5;
-        };})
-    ];
+  environment.systemPackages = with pkgs; [
+    wayland
+    waydroid
+    (sddm-chili-theme.override {
+      themeConfig = {
+        background = config.stylix.image;
+        ScreenWidth = 1920;
+        ScreenHeight = 1080;
+        blur = true;
+        recursiveBlurLoops = 3;
+        recursiveBlurRadius = 5;
+      };
+    })
+  ];
+
+  services.displayManager.sddm = {
+    enable = true;
+    theme = "chili";
+  };
 
   services.dbus = {
     enable = true;
@@ -97,11 +104,6 @@
       layout = "de";
       variant = "nodeadkeys";
       options = "ctrl:nocaps";
-    };
-
-    displayManager.sddm = {
-      enable = true;
-      theme = "chili";
     };
   };
 
