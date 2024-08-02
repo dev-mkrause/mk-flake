@@ -1,5 +1,8 @@
-{pkgs, config, ...}:
 {
+  pkgs,
+  config,
+  ...
+}: {
   # Enable networking
   networking.networkmanager.enable = true;
 
@@ -39,7 +42,7 @@
   users.users.mkrause = {
     isNormalUser = true;
     description = "Marvin Krause";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
       emacs
       git
@@ -54,7 +57,7 @@
   };
 
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; 
+  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
 
   stylix.enable = true;
   stylix.autoEnable = true;
@@ -89,7 +92,7 @@
 
   services.dbus = {
     enable = true;
-    packages = [ pkgs.dconf ];
+    packages = [pkgs.dconf];
   };
 
   programs.dconf = {
@@ -137,12 +140,12 @@
   };
 
   services.gnome.gnome-keyring.enable = true;
-  
+
   programs.sway.enable = true;
 
   programs.firefox.enable = true;
   programs.steam.enable = true;
-  
+
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;

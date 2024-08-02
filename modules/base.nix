@@ -1,9 +1,8 @@
-{pkgs, ... }:
-{
+{pkgs, ...}: {
   sops.defaultSopsFile = ../secrets/secrets.yaml;
   sops.defaultSopsFormat = "yaml";
 
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+  sops.age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
 
   environment.systemPackages = with pkgs; [
     sops
@@ -15,7 +14,7 @@
     zip
     unzip
     xz
-    (ripgrep.override { withPCRE2 = true; })
+    (ripgrep.override {withPCRE2 = true;})
     fd
     jq
     tree

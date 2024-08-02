@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "mkrause";
@@ -38,7 +41,7 @@
     zip
     xz
     unzip
-    (ripgrep.override { withPCRE2 = true; })
+    (ripgrep.override {withPCRE2 = true;})
     fd
     jq
     tree
@@ -49,7 +52,7 @@
     zstd
     gnupg
   ];
-  
+
   stylix.enable = true;
   stylix.autoEnable = true;
   stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";
@@ -70,9 +73,9 @@
         margin = "7 7 3 7";
         spacing = 2;
 
-        modules-left = [ "custom/os" "battery" "backlight" "pulseaudio" "cpu" "memory" ];
-        modules-center = [ "sway/workspaces" ];
-        modules-right = [ "idle_inhibitor" "tray" "clock" ];
+        modules-left = ["custom/os" "battery" "backlight" "pulseaudio" "cpu" "memory"];
+        modules-center = ["sway/workspaces"];
+        modules-right = ["idle_inhibitor" "tray" "clock"];
 
         "custom/os" = {
           "format" = " {} ";
@@ -116,10 +119,10 @@
         cpu = {
           "format" = "{usage}% ";
         };
-        memory = { "format" = "{}% "; };
+        memory = {"format" = "{}% ";};
         backlight = {
           "format" = "{percent}% {icon}";
-          "format-icons" = [ "" "" "" "" "" "" "" "" "" ];
+          "format-icons" = ["" "" "" "" "" "" "" "" ""];
         };
         battery = {
           "states" = {
@@ -132,7 +135,7 @@
           "format-plugged" = "{capacity}% ";
           #"format-good" = ""; # An empty format will hide the module
           #"format-full" = "";
-          "format-icons" = [ "" "" "" "" "" ];
+          "format-icons" = ["" "" "" "" ""];
         };
         pulseaudio = {
           "scroll-step" = 1;
@@ -149,7 +152,7 @@
             "phone" = "";
             "portable" = "";
             "car" = "";
-            "default" = [ "" "" "" ];
+            "default" = ["" "" ""];
           };
         };
       };
@@ -159,8 +162,18 @@
   programs.swaylock.enable = true;
   services.swayidle = {
     enable = true;
-    timeouts = [ { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock"; } ];
-    events = [ { event = "before-sleep"; command = "${pkgs.swaylock}/bin/swaylock"; } ];
+    timeouts = [
+      {
+        timeout = 300;
+        command = "${pkgs.swaylock}/bin/swaylock";
+      }
+    ];
+    events = [
+      {
+        event = "before-sleep";
+        command = "${pkgs.swaylock}/bin/swaylock";
+      }
+    ];
   };
 
   wayland.windowManager.sway = {
@@ -235,11 +248,11 @@
       radius = 7;
     };
   };
-  
+
   programs.gpg.enable = true;
   programs.emacs.enable = true;
   services.emacs.enable = true; # Emacs daemon
-  
+
   programs.foot.enable = true;
 
   programs.firefox = {
