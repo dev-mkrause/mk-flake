@@ -36,6 +36,7 @@
     iosevka-comfy.comfy
     nil # Nix language server
 
+    brightnessctl
     pciutils
     usbutils
     zip
@@ -259,6 +260,13 @@
       width = 3;
       radius = 7;
     };
+  };
+
+  services.gammastep = {
+    enable = true;
+    provider = "manual";
+    latitude = 50.11552;
+    longitude = 8.68417;
   };
 
   programs.gpg.enable = true;
